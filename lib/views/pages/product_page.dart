@@ -1,26 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controllers/product_controller.dart';
+import '../../controllers/cart_controller.dart'; // Pastikan path import ini sesuai
 import '../../views/widgets/product_card.dart';
 
 class ProductPage extends GetView<ProductController> {
   const ProductPage({super.key});
 
-  // // tidak boleh harusnya
-  // final ProductController controller = Get.put(ProductController());
-
   @override
   Widget build(BuildContext context) {
+    // Menemukan CartController yang sudah di-inject di ProductBinding
+    final CartController cartC = Get.find<CartController>();
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Product Home Page')),
+      appBar: AppBar(
+        title: const Text('Product Home Page'),
+        actions: [
+          IconButton(
+            onPressed: () => Get.toNamed("/cart"),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                const Icon(Icons.shopping_cart),
+                Positioned(
+                  right: -4,
+                  top: -4,
+                  // Bagian Obx yang kamu minta
+                  child: Obx(() {
+                    // Cek menggunakan totalItems agar sesuai dengan jumlah barang (quantity)
+                    if (cartC.totalItems == 0) return const SizedBox.shrink();
+                    return Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        '${cartC.totalItems}', // Tampilkan total keseluruhan barang
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10), // Spasi kosong di kanan icon
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Obx(() {
+          // Menampilkan loading indicator saat data dari dummyjson masih diambil
           if (controller.isLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.blueGrey),
             );
           }
+          // Menampilkan daftar produk setelah data berhasil dimuat
           return GridView.builder(
             itemCount: controller.products.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -32,6 +73,7 @@ class ProductPage extends GetView<ProductController> {
               return ProductCard(
                 product: controller.products[index],
                 onTap: () {
+                  // Kirim data product ke halaman detail saat diklik
                   Get.toNamed("/detail", arguments: controller.products[index]);
                 },
               );
