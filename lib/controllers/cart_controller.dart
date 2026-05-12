@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import '../models/product.dart';
 
-// Class bantuan untuk menyimpan produk dan jumlahnya
 class CartItem {
   Product product;
   int quantity;
@@ -10,20 +9,16 @@ class CartItem {
 }
 
 class CartController extends GetxController {
-  // RxList sekarang menyimpan CartItem, bukan langsung Product
   final RxList<CartItem> cartItems = <CartItem>[].obs;
 
   // Method menambah produk / menambah quantity
   void addToCart(Product product) {
-    // Cek apakah produk dengan ID yang sama sudah ada di keranjang
     int index = cartItems.indexWhere((item) => item.product.id == product.id);
 
     if (index != -1) {
-      // Jika sudah ada, tambah jumlahnya (quantity)
       cartItems[index].quantity++;
-      cartItems.refresh(); // Wajib dipanggil agar Obx di UI menyadari ada perubahan nilai di dalam list
+      cartItems.refresh(); 
     } else {
-      // Jika belum ada, tambahkan sebagai item baru
       cartItems.add(CartItem(product: product));
     }
 
@@ -44,7 +39,6 @@ class CartController extends GetxController {
         cartItems[index].quantity--;
         cartItems.refresh();
       } else {
-        // Jika quantity sisa 1 dan dikurangi lagi, hapus item dari keranjang
         cartItems.removeAt(index);
       }
     }
