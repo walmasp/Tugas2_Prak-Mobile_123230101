@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../models/product.dart';
-import '../../controllers/cart_controller.dart'; // Import CartController
+import '../../controllers/cart_controller.dart'; 
 
 class ProductDetailPage extends StatelessWidget {
   ProductDetailPage({super.key});
 
-  // Mengambil data produk yang dikirim via arguments
   final Product product = Get.arguments as Product;
 
   @override
   Widget build(BuildContext context) {
-    // Menemukan CartController yang sudah di-inject sebelumnya
     final CartController cartC = Get.find<CartController>();
 
     return Scaffold(
@@ -21,7 +19,7 @@ class ProductDetailPage extends StatelessWidget {
         title: const Text("Detail Produk"),
       ),
       
-      // Bagian tombol "Add to Cart" yang selalu ada di bawah
+      // Bagian tombol "Add to Cart" 
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -44,7 +42,6 @@ class ProductDetailPage extends StatelessWidget {
             ),
           ),
           onPressed: () {
-            // Memanggil method addToCart dari controller
             cartC.addToCart(product);
           },
           child: const Text(
