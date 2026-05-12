@@ -9,7 +9,6 @@ class ProductPage extends GetView<ProductController> {
 
   @override
   Widget build(BuildContext context) {
-    // Menemukan CartController yang sudah di-inject di ProductBinding
     final CartController cartC = Get.find<CartController>();
 
     return Scaffold(
@@ -25,9 +24,7 @@ class ProductPage extends GetView<ProductController> {
                 Positioned(
                   right: -4,
                   top: -4,
-                  // Bagian Obx yang kamu minta
                   child: Obx(() {
-                    // Cek menggunakan totalItems agar sesuai dengan jumlah barang (quantity)
                     if (cartC.totalItems == 0) return const SizedBox.shrink();
                     return Container(
                       padding: const EdgeInsets.all(4),
@@ -49,13 +46,12 @@ class ProductPage extends GetView<ProductController> {
               ],
             ),
           ),
-          const SizedBox(width: 10), // Spasi kosong di kanan icon
+          const SizedBox(width: 10), 
         ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Obx(() {
-          // Menampilkan loading indicator saat data dari dummyjson masih diambil
           if (controller.isLoading) {
             return const Center(
               child: CircularProgressIndicator(color: Colors.blueGrey),
