@@ -27,7 +27,6 @@ class MainApp extends StatelessWidget {
           name: "/detail",
           page: () => ProductDetailPage(),
         ),
-        // Tambahkan Route Cart di sini
         GetPage(
           name: "/cart",
           page: () => const CartPage(),
