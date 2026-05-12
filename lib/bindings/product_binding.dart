@@ -6,7 +6,6 @@ class ProductBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => ProductController());
-    // Gunakan Get.put agar CartController langsung tersedia untuk badge di AppBar
     Get.put(CartController()); 
   }
 }
